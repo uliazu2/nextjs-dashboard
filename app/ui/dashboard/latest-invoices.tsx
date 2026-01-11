@@ -15,7 +15,9 @@ export default async function LatestInvoices() {
         { <div className="bg-white px-6">
           {latestInvoices.map((invoice, i) => {
             return (
-              <div key={invoice.id}className={clsx(
+              <div 
+              key={invoice.id} 
+                className={clsx(
                   'flex flex-row items-center justify-between py-4',
                   {
                     'border-t': i !== 0,
