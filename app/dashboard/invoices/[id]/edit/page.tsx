@@ -1,3 +1,9 @@
+import { Metadata } from 'next';
+export const metadata: Metadata = {
+  title: 'Edit Invoice',
+  description: 'Edit Invoice page for Acme Dashboard',
+};
+
 import Form from '@/app/ui/invoices/edit-form';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import { fetchInvoiceById, fetchCustomers } from '@/app/lib/data';
