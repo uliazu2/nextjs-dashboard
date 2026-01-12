@@ -1,5 +1,4 @@
 'use server';
-import { UpdateInvoice } from '../ui/invoices/buttons';
 import { z } from 'zod';
 import postgres from 'postgres';
 import { revalidatePath } from 'next/cache';
@@ -22,6 +21,9 @@ const FormSchema = z.object({
   date: z.string(),
 });
 
+// Input schema for create/update actions (omit id and date)
+const InvoiceInput = FormSchema.omit({ id: true, date: true });
+
 export type State = {
   errors?: {
     customerId?: string[];
@@ -33,10 +35,10 @@ export type State = {
 
 export async function updateInvoice(
   id: string,
-  prevState: State,
+  _prevState: State,
   formData: FormData,
 ) {
-  const validatedFields = UpdateInvoice.safeParse({
+  const validatedFields = InvoiceInput.safeParse({
     customerId: formData.get('customerId'),
     amount: formData.get('amount'),
     status: formData.get('status'),
@@ -66,11 +68,9 @@ export async function updateInvoice(
   redirect('/dashboard/invoices');
 }
  
-const CreateInvoice = FormSchema.omit({ id: true, date: true });
-
-export async function createInvoice(prevState: State, formData: FormData) {
+export async function createInvoice(_prevState: State, formData: FormData) {
   // Validate form using Zod
-  const validatedFields = CreateInvoice.safeParse({
+  const validatedFields = InvoiceInput.safeParse({
     customerId: formData.get('customerId'),
     amount: formData.get('amount'),
     status: formData.get('status'),
@@ -116,7 +116,7 @@ export async function deleteInvoice(id: string) {
 }
 
 export async function authenticate(
-  prevState: string | undefined,
+  _prevState: string | undefined,
   formData: FormData,
 ) {
   try {
